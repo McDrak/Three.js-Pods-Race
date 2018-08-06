@@ -1,2 +1,2 @@
 # Three.js-Pods-Race
-Project for Interaction Human Machine subject, which consist in create videogame in Three.js
+Project for Human-Machine Interaction subject, which consist in the creation of a videogame in Three.js or Unity.
