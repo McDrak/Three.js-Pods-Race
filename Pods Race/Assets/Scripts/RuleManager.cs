@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RuleManager : MonoBehaviour {
+    // List of Possible Prefabs
+    public GameObject[] prefabs = new GameObject[ 6 ];
     // Procedural Rule Container
-    public Dictionary< string, List< int > > ruleSet;
+    private Dictionary< string, List< int > > ruleSet;
 
     // Initial Map Identifiers
-    public List< List< int > > initialMap;
+    private List< List< int > > initialMap;
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +50,10 @@ public class RuleManager : MonoBehaviour {
         ruleSet.Add( "1000", new List< int >( ) { 0 } );
         ruleSet.Add( "1001", new List< int >( ) { 0 } );
         ruleSet.Add( "1101", new List< int >( ) { 0 } );
+        ruleSet.Add( "3000", new List< int >( ) { 0 } );
+        ruleSet.Add( "2403", new List< int >( ) { 0, 5 } );
+        ruleSet.Add( "2003", new List< int >( ) { 0, 5 } );
+        ruleSet.Add( "1103", new List< int >( ) { 0, 5 } );
 
         initialMap = new List< List < int > >( ) {
             new List< int >( ) { 1, -1, -1, -1, -1, -1, -1, -1, 1 },
@@ -96,7 +102,8 @@ public class RuleManager : MonoBehaviour {
                     }
 
                     // Get a random number in the range of the indices of the outcome
-                    int randIndex = Random.Range( 0, outcomes.Count - 1 );
+                    int randIndex = Random.Range( 0, outcomes.Count );
+                    Debug.Log( outcomes.Count + " - " + randIndex + " - " + outcomes[ randIndex ] );
 
                     // Sets the new slot with the value in the random index
                     initialMap[ i ][ j ] = outcomes[ randIndex ];
@@ -105,7 +112,26 @@ public class RuleManager : MonoBehaviour {
         }
     }
 
-    void printMap( ){ 
-
+    void printMap( ) {
+        // Initial Z Position
+        float initialVerticalPosition = 0.0f;
+        // X Modifier
+        float horizonalModifier = 10.0f;
+        // Y Modifier
+        float verticalModifier = 10.0f;
+        // From bottom to top
+        for( int i = initialMap.Count - 1; i >= 0; i-- ) {
+            // Initial X Position
+            float initialHorizontalPosition = -40.0f;
+            // From left to right
+            for( int j = 0; j < initialMap[ i ].Count; j++ ) {
+                // Instantiates a new gameobject from the index in the map
+                Instantiate( prefabs[ initialMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, this.transform.position.y, initialVerticalPosition ), Quaternion.identity );
+                // Increments X Position
+                initialHorizontalPosition += horizonalModifier;
+            }
+            // Increments Z Position
+            initialVerticalPosition += verticalModifier;
+        }
     }
 }
