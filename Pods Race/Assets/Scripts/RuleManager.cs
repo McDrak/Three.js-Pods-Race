@@ -54,6 +54,20 @@ public class RuleManager : MonoBehaviour {
         ruleSet.Add( "2403", new List< int >( ) { 0, 5 } );
         ruleSet.Add( "2003", new List< int >( ) { 0, 5 } );
         ruleSet.Add( "1103", new List< int >( ) { 0, 5 } );
+        ruleSet.Add( "3031", new List< int >( ) { 1 } );
+        ruleSet.Add( "5031", new List< int >( ) { 1 } );
+        ruleSet.Add( "1203", new List< int >( ) { 0 } );
+        ruleSet.Add( "4205", new List< int >( ) { 0 } );
+        ruleSet.Add( "4103", new List< int >( ) { 0 } );
+        ruleSet.Add( "5111", new List< int >( ) { 1 } );
+        ruleSet.Add( "3005", new List< int >( ) { 1 } ); // Keep in mind
+        ruleSet.Add( "0030", new List< int >( ) { 1, 5 } );
+        ruleSet.Add( "4203", new List< int >( ) { 0 } );
+        ruleSet.Add( "1115", new List< int >( ) { 1 } );
+        ruleSet.Add( "1300", new List< int >( ) { 0 } );
+        ruleSet.Add( "4101", new List< int >( ) { 0 } );
+        ruleSet.Add( "5030", new List< int >( ) { 0 } );
+        ruleSet.Add( "1005", new List< int >( ) { 0, 2 } );
 
         initialMap = new List< List < int > >( ) {
             new List< int >( ) { 1, -1, -1, -1, -1, -1, -1, -1, 1 },
@@ -84,7 +98,7 @@ public class RuleManager : MonoBehaviour {
 
     void generateMap( ) {
         // From botton to top in the innitial map list
-        for( int i = initialMap.Count - 2; i >= 0; i-- ){ 
+        for( int i = initialMap.Count - 2; i >= 0; i-- ) { 
             // From left to right
             for( int j = 0; j < initialMap[ i ].Count; j++ ) {
                 // If the value has not been assigned yet
@@ -97,16 +111,17 @@ public class RuleManager : MonoBehaviour {
 
                     // Get the list of possible outcomes out of the rules set
                     List< int > outcomes;
-                    if( !ruleSet.TryGetValue( rule, out outcomes ) ) {
-                        Debug.Log( "Key Error: " + rule + " " + i + " " + j );
+                    if (!ruleSet.TryGetValue(rule, out outcomes)) {
+                        Debug.Log("Key Error: " + rule);
+                        initialMap[ i ][ j ] = 0;
                     }
+                    else {
+                        // Get a random number in the range of the indices of the outcome
+                        int randIndex = Random.Range(0, outcomes.Count);
 
-                    // Get a random number in the range of the indices of the outcome
-                    int randIndex = Random.Range( 0, outcomes.Count );
-                    Debug.Log( outcomes.Count + " - " + randIndex + " - " + outcomes[ randIndex ] );
-
-                    // Sets the new slot with the value in the random index
-                    initialMap[ i ][ j ] = outcomes[ randIndex ];
+                        // Sets the new slot with the value in the random index
+                        initialMap[ i ][ j ] = outcomes[ randIndex ];
+                    }
                 }
             }
         }
