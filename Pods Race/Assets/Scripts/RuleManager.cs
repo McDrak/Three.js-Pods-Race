@@ -141,7 +141,7 @@ public class RuleManager : MonoBehaviour {
             // From left to right
             for( int j = 0; j < initialMap[ i ].Count; j++ ) {
                 // Instantiates a new gameobject from the index in the map
-                Instantiate( prefabs[ initialMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, this.transform.position.y, initialVerticalPosition ), Quaternion.identity );
+                Instantiate( prefabs[ initialMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, this.transform.position.y, initialVerticalPosition ), prefabs[ initialMap[ i ][ j ] ].transform.rotation );
                 // Increments X Position
                 initialHorizontalPosition += horizonalModifier;
             }
