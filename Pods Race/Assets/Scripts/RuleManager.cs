@@ -20,11 +20,11 @@ public class RuleManager : MonoBehaviour {
         ruleSet.Add( "0000", new List< int >( ) { 0 } );
         ruleSet.Add( "0001", new List< int >( ) { 0, 3 } );
         ruleSet.Add( "3011", new List< int >( ) { 1 } );
-        ruleSet.Add( "1003", new List< int >( ) { 0, 2 } );
+        ruleSet.Add( "1003", new List< int >( ) { 0 } );
         ruleSet.Add( "0031", new List< int >( ) { 0, 1, 5 } );
         ruleSet.Add( "5311", new List< int >( ) { 1 } );
         ruleSet.Add( "1105", new List< int >( ) { 0 } );
-        ruleSet.Add( "0051", new List< int >( ) { 0, 3 } );
+        ruleSet.Add( "0051", new List< int >( ) { 0 } );
         ruleSet.Add( "0511", new List< int >( ) { 1, 5 } );
         ruleSet.Add( "4100", new List< int >( ) { 0 } );
         ruleSet.Add( "0005", new List< int >( ) { 0 } );
@@ -50,10 +50,10 @@ public class RuleManager : MonoBehaviour {
         ruleSet.Add( "1000", new List< int >( ) { 0 } );
         ruleSet.Add( "1001", new List< int >( ) { 0 } );
         ruleSet.Add( "1101", new List< int >( ) { 0 } );
-        ruleSet.Add( "3000", new List< int >( ) { 0 } );
-        ruleSet.Add( "2403", new List< int >( ) { 0, 5 } );
-        ruleSet.Add( "2003", new List< int >( ) { 0, 5 } );
-        ruleSet.Add( "1103", new List< int >( ) { 0, 5 } );
+        ruleSet.Add( "3000", new List< int >( ) { 1 } );
+        ruleSet.Add( "2403", new List< int >( ) { 0 } );
+        ruleSet.Add( "2003", new List< int >( ) { 0 } );
+        ruleSet.Add( "1103", new List< int >( ) { 0 } );
         ruleSet.Add( "3031", new List< int >( ) { 1 } );
         ruleSet.Add( "5031", new List< int >( ) { 1 } );
         ruleSet.Add( "1203", new List< int >( ) { 0 } );
@@ -68,6 +68,28 @@ public class RuleManager : MonoBehaviour {
         ruleSet.Add( "4101", new List< int >( ) { 0 } );
         ruleSet.Add( "5030", new List< int >( ) { 0 } );
         ruleSet.Add( "1005", new List< int >( ) { 0, 2 } );
+        ruleSet.Add( "5310", new List< int >( ) { 4 } );
+        ruleSet.Add( "1310", new List< int >( ) { 4 } );
+        ruleSet.Add( "0310", new List< int >( ) { 0, 4 } );
+        ruleSet.Add( "0100", new List< int >( ) { 0 } );
+        ruleSet.Add( "0401", new List< int >( ) { 0 } );
+        ruleSet.Add( "0014", new List< int >( ) { 0 } );
+        ruleSet.Add( "2405", new List< int >( ) { 0 } );
+        ruleSet.Add( "2001", new List< int >( ) { 0 } );
+        ruleSet.Add( "3001", new List< int >( ) { 0, 1 } );
+        ruleSet.Add( "2401", new List< int >( ) { 0 } );
+        ruleSet.Add( "0140", new List< int >( ) { 0 } );
+        ruleSet.Add( "2005", new List< int >( ) { 0 } );
+        ruleSet.Add( "1201", new List< int >( ) { 0 } );
+        ruleSet.Add( "1314", new List< int >( ) { 0, 4 } );
+        ruleSet.Add( "0010", new List< int >( ) { 0 } );
+        ruleSet.Add( "3030", new List< int >( ) { 0, 1, 4 } );
+        ruleSet.Add( "0405", new List< int >( ) { 0 } );
+        ruleSet.Add( "1205", new List< int >( ) { 0, 2 } );
+        ruleSet.Add( "4105", new List< int >( ) { 0 } );
+        ruleSet.Add( "1301", new List< int >( ) { 0 } );
+        ruleSet.Add( "1305", new List< int >( ) { 0, 2 } );
+        ruleSet.Add( "3010", new List< int >( ) { 1, 4 } );
 
         initialMap = new List< List < int > >( ) {
             new List< int >( ) { 1, -1, -1, -1, -1, -1, -1, -1, 1 },
@@ -129,7 +151,7 @@ public class RuleManager : MonoBehaviour {
 
     void printMap( ) {
         // Initial Z Position
-        float initialVerticalPosition = 0.0f;
+        float initialVerticalPosition = 25.0f;
         // X Modifier
         float horizonalModifier = 10.0f;
         // Y Modifier
