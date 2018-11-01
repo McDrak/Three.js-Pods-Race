@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RuleManager : MonoBehaviour {
+    // Player Gameobject
+    public GameObject player;
     // loadiong Screen Game Object
     public GameObject loadingScreen;
     // Loading Screen Slider
@@ -193,6 +195,7 @@ public class RuleManager : MonoBehaviour {
 
         if( slider.value == 1 ) {
             loadingScreen.SetActive( false );
+            player.SetActive( true );
         }
     }
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140022, g: 0.50089264, b: 0.57231236, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140028, g: 0.5008927, b: 0.57231224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -553,6 +553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1817db3b87721494fa99d2eee87ba98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 983588341}
   loadingScreen: {fileID: 592265894}
   slider: {fileID: 489984422}
   prefabs:
@@ -671,7 +672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &983588342
 Transform:
   m_ObjectHideFlags: 0
@@ -701,6 +702,10 @@ MonoBehaviour:
   playerRot: {fileID: 1061945162}
   speed: 30
   turnSpeed: 30
+  timer: 15
+  xOffset: 0.2
+  xMax: 0.8
+  xMin: -0.7
 --- !u!4 &1061945162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4698210726743372, guid: fc5c3aeb8ba266e4b8dbc1576eed205a,
