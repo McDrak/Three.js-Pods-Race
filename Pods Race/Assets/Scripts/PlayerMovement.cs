@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour {
         TURBO,
         BRAKE
     };
-	public Transform playerRot;
 	// Current Wiimote
     private Wiimote wiimote;
     public float speed = 30f;
@@ -105,11 +104,4 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 accelVec = new Vector3( accel[ 0 ], -accel[ 2 ], -accel[ 1 ] ).normalized;
 		return accelVec;
 	}
-
-	void OnDrawGizmos() {
-        if ( wiimote != null ) {
-			Gizmos.color = Color.red;
-			Gizmos.DrawLine( playerRot.position, playerRot.position + playerRot.rotation * GetAccelVector( ) * 2 );
-		}
-    }
 }

@@ -133,7 +133,9 @@ public class RuleManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        UpdateSlider( );
+        if( !player.active ) {
+            UpdateSlider( );
+        }
     }
 
     IEnumerator generateMap( ) {
