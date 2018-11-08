@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
     private State currentState;
     private float powerInput;
 	private float turnInput;
+    private float powerMod;
 
 	// Use this for initialization
 	void Start() {
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour {
 
         currentState = State.NONE;
         powerInput = 0.2f;
+        powerMod = 0.2f;
 	}
 
 	// Update is called once per frame
@@ -89,7 +91,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if( timer <= 0 ) {
-            powerInput += 0.2f;
+            powerInput += powerMod;
             timer = 15.0f;
         }
 	}
@@ -104,4 +106,9 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 accelVec = new Vector3( accel[ 0 ], -accel[ 2 ], -accel[ 1 ] ).normalized;
 		return accelVec;
 	}
+
+    void OnCollisionEnter(Collision other) {
+        powerInput = 0;
+        powerMod = 0;
+    }
 }

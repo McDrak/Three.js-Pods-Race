@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RuleManager : MonoBehaviour {
+    public GameObject mapContainer;
     // Player Gameobject
     public GameObject player;
     // loadiong Screen Game Object
     public GameObject loadingScreen;
     // Loading Screen Slider
     public Slider slider;
+
+    public GameObject generationFlag;
     // List of Possible Prefabs
     public GameObject[] prefabs = new GameObject[ 6 ];
     // Procedural Rule Container
@@ -20,6 +23,9 @@ public class RuleManager : MonoBehaviour {
 
     // Map items that have been generated
     private float currentGenerated;
+
+    private float initialVerticalPosition;
+    private float initialHorizontalPosition;
 
 	// Use this for initialization
 	void Awake () {
@@ -133,14 +139,14 @@ public class RuleManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if( !player.active ) {
+        if( !player.activeSelf ) {
             UpdateSlider( );
         }
     }
 
     IEnumerator generateMap( ) {
         // Initial Z Position
-        float initialVerticalPosition = 25.0f;
+        initialVerticalPosition = 25.0f;
         // X Modifier
         float horizonalModifier = 10.0f;
         // Y Modifier
@@ -149,7 +155,7 @@ public class RuleManager : MonoBehaviour {
         // From botton to top in the innitial map list
         for( int i = initialMap.Count - 1; i >= 0; i-- ) {
             // Initial X Position
-            float initialHorizontalPosition = -40.0f;
+            initialHorizontalPosition = -40.0f;
 
             // From left to right
             for( int j = 0; j < initialMap[ i ].Count; j++ ) {
@@ -177,7 +183,8 @@ public class RuleManager : MonoBehaviour {
                 }
 
                 // Instantiates a new gameobject from the index in the map
-                Instantiate( prefabs[ initialMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, this.transform.position.y, initialVerticalPosition ), prefabs[ initialMap[ i ][ j ] ].transform.rotation );
+                GameObject tile = Instantiate( prefabs[ initialMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, 10.0f, initialVerticalPosition ), prefabs[ initialMap[ i ][ j ] ].transform.rotation );
+                tile.transform.SetParent( mapContainer.transform );
                 // Increments X Position
                 initialHorizontalPosition += horizonalModifier;
 
@@ -199,5 +206,66 @@ public class RuleManager : MonoBehaviour {
             loadingScreen.SetActive( false );
             player.SetActive( true );
         }
+    }
+
+    IEnumerator generateExtendedMap( ) {
+        List< List< int > > extendedMap = new List< List< int > >( );
+        extendedMap.Add( initialMap[ initialMap.Count - 1 ] );
+
+        // X Modifier
+        float horizonalModifier = 10.0f;
+        // Y Modifier
+        float verticalModifier = 10.0f;
+
+        for( int i = 1; i < 20; i++ ) {
+            initialHorizontalPosition = -40.0f;
+            extendedMap.Add( new List< int >( ) { 1, -1, -1, -1, -1, -1, -1, -1, 1 } );
+
+            for( int j = 0; j < extendedMap[ i ].Count; j++ ) {
+                // If the value has not been assigned yet
+                if( extendedMap[ i ][ j ] == -1 ) {
+                    // Creates a string to store the values around the local index
+                    string rule = extendedMap[ i ][ j - 1 ] + "" +
+                        extendedMap[ i - 1][ j - 1 ] + "" +
+                        extendedMap[ i - 1 ][ j ] + "" +
+                        extendedMap[ i - 1 ][ j + 1];
+
+                    // Get the list of possible outcomes out of the rules set
+                    List< int > outcomes;
+                    if (!ruleSet.TryGetValue(rule, out outcomes)) {
+                        Debug.Log("Key Error: " + rule);
+                        extendedMap[ i ][ j ] = 0;
+                    }
+                    else {
+                        // Get a random number in the range of the indices of the outcome
+                        int randIndex = Random.Range(0, outcomes.Count);
+
+                        // Sets the new slot with the value in the random index
+                        extendedMap[ i ][ j ] = outcomes[ randIndex ];
+                    }
+                }
+
+                // Instantiates a new gameobject from the index in the map
+                GameObject tile = Instantiate( prefabs[ extendedMap[ i ][ j ] ], new Vector3( initialHorizontalPosition, 10.0f, initialVerticalPosition ), prefabs[ extendedMap[ i ][ j ] ].transform.rotation );
+                tile.transform.SetParent( mapContainer.transform );
+                // Increments X Position
+                initialHorizontalPosition += horizonalModifier;
+
+                // Update the Current Generated
+                currentGenerated++;
+
+                // Signals a new frame
+            }
+
+            // Increments Z Position
+            initialVerticalPosition += verticalModifier;
+
+            yield return null;
+        }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        generationFlag.transform.position = new Vector3( generationFlag.transform.position.x, generationFlag.transform.position.y, generationFlag.transform.position.z + 115.0f );
+        StartCoroutine( generateExtendedMap( ) );
     }
 }
