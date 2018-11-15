@@ -10,6 +10,12 @@ public class PlayerMovement : MonoBehaviour {
         TURBO,
         BRAKE
     };
+
+    public GameObject playerMesh;
+    public float roll;
+    public float rotationSpeed = 750.0f;
+    public float maxRotationAngle = 45.0f;
+
 	// Current Wiimote
     private Wiimote wiimote;
     public float speed = 30f;
@@ -79,14 +85,21 @@ public class PlayerMovement : MonoBehaviour {
             float moveX = accelVector.z + xOffset;
             if( moveX <= 0.2f && moveX >= -0.2f ) {
                 turnInput = 0;
+                playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, 0.0f );
             }
             else if( moveX > 0.2f ) {
                 turnInput = moveX / xMax;
                 turnInput = turnInput > 1.0f ? 1.0f : turnInput;
+
+                roll = rotationSpeed * Time.deltaTime * -turnInput;
+                playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, roll );
             }
             else {
                 turnInput = -moveX / xMin;
                 turnInput = turnInput < -1.0f ? -1.0f : turnInput;
+
+                roll = rotationSpeed * Time.deltaTime * -turnInput;
+                playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, roll );
             }
         }
 
