@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour {
     private float powerInput;
 	private float turnInput;
     private float powerMod;
+    private bool movementEnabled;
 
 	// Use this for initialization
 	void Start() {
@@ -42,13 +43,26 @@ public class PlayerMovement : MonoBehaviour {
         currentState = State.NONE;
         powerInput = 0.2f;
         powerMod = 0.2f;
+
+        movementEnabled = true;
 	}
 
 	// Update is called once per frame
 	void Update () {
+        if( movementEnabled ) {
+            MovePlayer( );
+        }
+	}
+	
+	void FixedUpdate () {
+		transform.Translate( new Vector3( 0f, 0f, powerInput * speed * Time.deltaTime ) );
+		transform.Translate( new Vector3( turnSpeed * turnInput * Time.deltaTime, 0f, 0f ) );
+	}
+
+    void MovePlayer( ) {
         timer -= Time.deltaTime;
 
-		if ( WiimoteManager.HasWiimote() ) {
+        if ( WiimoteManager.HasWiimote() ) {
             // Wiimote Identification
             wiimote = WiimoteManager.Wiimotes[ 0 ];
             // Wiimote Data Read
@@ -90,29 +104,21 @@ public class PlayerMovement : MonoBehaviour {
             else if( moveX > 0.2f ) {
                 turnInput = moveX / xMax;
                 turnInput = turnInput > 1.0f ? 1.0f : turnInput;
-
-                roll = rotationSpeed * Time.deltaTime * -turnInput;
-                playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, roll );
             }
             else {
                 turnInput = -moveX / xMin;
                 turnInput = turnInput < -1.0f ? -1.0f : turnInput;
-
-                roll = rotationSpeed * Time.deltaTime * -turnInput;
-                playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, roll );
             }
+            
+            roll = rotationSpeed * Time.deltaTime * -turnInput;
+            playerMesh.transform.localEulerAngles = new Vector3( 0.0f, 0.0f, roll );
         }
 
         if( timer <= 0 ) {
             powerInput += powerMod;
             timer = 15.0f;
         }
-	}
-	
-	void FixedUpdate () {
-		transform.Translate( new Vector3( 0f, 0f, powerInput * speed * Time.deltaTime ) );
-		transform.Translate( new Vector3( turnSpeed * turnInput * Time.deltaTime, 0f, 0f ) );
-	}
+    }
 
 	Vector3 GetAccelVector( ) {
 		float[ ] accel = wiimote.Accel.GetCalibratedAccelData( );
@@ -120,8 +126,9 @@ public class PlayerMovement : MonoBehaviour {
 		return accelVec;
 	}
 
-    void OnCollisionEnter(Collision other) {
-        powerInput = 0;
-        powerMod = 0;
+    public void DisableMovement( ) {
+        movementEnabled = false;
+        powerInput = 0.0f;
+        turnInput = 0.0f;
     }
 }
